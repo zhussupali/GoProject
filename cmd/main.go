@@ -4,13 +4,22 @@ import (
 	"log"
 	"twittie"
 	"twittie/pkg/handler"
+
+	"github.com/spf13/viper"
 )
 
-func main() {
+func main() {doc
+		log.Fatal("error init configs: ", err.Error())
+	}
 	handlers := new(handler.Handler)
 	srv := new(twittie.Server)
-	if err := srv.Run("8000", handlers.InitRoutes()); err != nil {
+	if err := srv.Run(viper.GetString("8000"), handlers.InitRoutes()); err != nil {
 		log.Fatal("couldn't run server", err.Error())
 	}
+}
 
+func initConfig() error {
+	viper.AddConfigPath("configs")
+	viper.SetConfigName("config")
+	return viper.ReadInConfig()
 }
