@@ -8,7 +8,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-func main() {doc
+func main() {
+	if err := initConfig(); err != nil {
 		log.Fatal("error init configs: ", err.Error())
 	}
 	handlers := new(handler.Handler)
@@ -19,7 +20,7 @@ func main() {doc
 }
 
 func initConfig() error {
-	viper.AddConfigPath("configs")
+	viper.AddConfigPath("../configs")
 	viper.SetConfigName("config")
 	return viper.ReadInConfig()
 }
