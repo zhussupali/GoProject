@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 	"twittie"
 	"twittie/pkg/handler"
@@ -9,18 +8,21 @@ import (
 	"twittie/pkg/service"
 
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 )
 
 func main() {
+	logrus.SetFormatter(new(logrus.JSONFormatter))
+
 	if err := initConfig(); err != nil {
-		log.Fatal("error init configs: ", err.Error())
+		logrus.Fatal("error init configs: ", err.Error())
 	}
 	
-	if err := godotenv.Load("../.env"); err != nil {
-		log.Fatalf("error initializing configs %s", err.Error())
+	if err := godotenv.Load(".env"); err != nil {
+		logrus.Fatalf("error initializing configs %s", err.Error())
 	}
 
 	db, err := repository.NewPostgresDB(repository.Config{
@@ -32,7 +34,7 @@ func main() {
 		Password: os.Getenv("DB_PASSWORD"),
 	})
 	if err != nil {
-		log.Fatal("error init db: %s", err.Error())
+		logrus.Fatal("error init db: %s", err.Error())
 	}
 
 
@@ -41,13 +43,13 @@ func main() {
 	handlers := handler.NewHandler(services)
 
 	srv := new(twittie.Server)
-	if err := srv.Run(viper.GetString("8000"), handlers.InitRoutes()); err != nil {
-		log.Fatal("couldn't run server", err.Error())
+	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+		logrus.Fatal("couldn't run server", err.Error())
 	}
 }
 
 func initConfig() error {
-	viper.AddConfigPath("../configs")
+	viper.AddConfigPath("configs")
 	viper.SetConfigName("config")
 	return viper.ReadInConfig()
 }
