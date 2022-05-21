@@ -2,12 +2,12 @@ package repository
 
 import (
 	"twittie"
-
 	"github.com/jmoiron/sqlx"
 )
 
 type Authorization interface {
 	CreateUser(user twittie.User) (int, error)
+	GetUser(username, password string) (twittie.User, error)
 }
 
 type Post interface {
