@@ -7,7 +7,7 @@ import (
 
 const (
 	usersTable = "users" 
-	postsListTable = "posts_list"
+	postsTable = "posts"
 	usersListTable = "users_list"
 
 )

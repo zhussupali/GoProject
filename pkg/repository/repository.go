@@ -11,7 +11,7 @@ type Authorization interface {
 }
 
 type Post interface {
-
+	Create(userId int, posts twittie.Post) (int, error)
 }
 
 type Repository struct {
@@ -22,5 +22,6 @@ type Repository struct {
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
+		Post: NewPostPostgres(db),
 	}
 }
