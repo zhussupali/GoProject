@@ -31,6 +31,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			posts.GET("/", h.getAllPosts)
 			posts.GET("/:id", h.getPostById)
 			posts.DELETE("/:id", h.deletePost)
+			posts.PUT("/:id", h.updatePost)
 		}
 	}
 	return router

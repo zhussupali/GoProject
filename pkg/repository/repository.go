@@ -15,6 +15,7 @@ type Post interface {
 	GetAll(userId int) ([]twittie.Post, error)
 	GetById(userId, listId int) (twittie.Post, error)
 	Delete(userId, listId int) error
+	Update(userId, listId int, input twittie.UpdatePostInput) error
 }
 
 type Repository struct {

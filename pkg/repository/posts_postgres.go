@@ -2,9 +2,11 @@ package repository
 
 import (
 	"fmt"
+	"strings"
 	"twittie"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
 type PostsPostgres struct {
@@ -58,5 +60,30 @@ func (r *PostsPostgres) Delete(userId, postId int) error {
 		postsTable)
 	_, err := r.db.Exec(query, userId, postId)
 
+	return err
+}
+
+
+func (r *PostsPostgres) Update(userId, postId int, input twittie.UpdatePostInput) error {
+	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+	argId := 1
+
+	if input.Text != nil {
+		setValues = append(setValues, fmt.Sprintf("text=$%d", argId))
+		args = append(args, *input.Text)
+		argId++
+	}
+	
+	setQuery := strings.Join(setValues, ", ")
+
+	query := fmt.Sprintf("UPDATE %s SET %s WHERE id=$%d AND user_id=$%d",
+		postsTable, setQuery, argId, argId+1)
+	args = append(args, postId, userId)
+
+	logrus.Debugf("updateQuery: %s", query)
+	logrus.Debugf("args: %s", args)
+
+	_, err := r.db.Exec(query, args...)
 	return err
 }

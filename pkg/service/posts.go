@@ -30,3 +30,11 @@ func (s *PostsService) GetById(userId, listId int) (twittie.Post, error) {
 func (s *PostsService) Delete(userId, listId int) error {
 	return s.repo.Delete(userId, listId)
 }
+
+func (s *PostsService) Update(userId, listId int, input twittie.UpdatePostInput) error {
+	if err := input.Validate(); err != nil {
+		return err
+	}
+
+	return s.repo.Update(userId, listId, input)
+}
