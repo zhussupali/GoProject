@@ -32,10 +32,20 @@ func (r *PostsPostgres) Create(userId int, post twittie.Post) (int, error) {
 	return id, tx.Commit()
 }
 
-func (r *PostsPostgres) Delete(userId, listId int) error {
+func (r *PostsPostgres) GetAll(userId int) ([]twittie.Post, error) {
+	var posts []twittie.Post
+
+	query := fmt.Sprintf("SELECT id, text, user_id from %s WHERE user_id = $1",
+		postsTable)
+	err := r.db.Select(&posts, query, userId)
+
+	return posts, err
+}
+
+func (r *PostsPostgres) Delete(userId, postId int) error {
 	query := fmt.Sprintf("DELETE FROM %s WHERE user_id=$1 AND id=$2",
 		postsTable)
-	_, err := r.db.Exec(query, userId, listId)
+	_, err := r.db.Exec(query, userId, postId)
 
 	return err
 }

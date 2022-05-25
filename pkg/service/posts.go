@@ -19,6 +19,10 @@ func (s *PostsService) Create(userId int, posts twittie.Post) (int, error) {
 	return s.repo.Create(userId, posts)
 }
 
+func (s *PostsService) GetAll(userId int) ([]twittie.Post, error) {
+	return s.repo.GetAll(userId)
+}
+
 func (s *PostsService) Delete(userId, listId int) error {
 	return s.repo.Delete(userId, listId)
 }
