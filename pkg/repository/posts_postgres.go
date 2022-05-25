@@ -42,6 +42,17 @@ func (r *PostsPostgres) GetAll(userId int) ([]twittie.Post, error) {
 	return posts, err
 }
 
+func (r *PostsPostgres) GetById(userId, postId int) (twittie.Post, error) {
+	var list twittie.Post
+
+	query := fmt.Sprintf(`SELECT * FROM %s WHERE user_id = $1 AND id = $2`,
+		postsTable)
+	err := r.db.Get(&list, query, userId, postId)
+
+	return list, err
+}
+
+
 func (r *PostsPostgres) Delete(userId, postId int) error {
 	query := fmt.Sprintf("DELETE FROM %s WHERE user_id=$1 AND id=$2",
 		postsTable)

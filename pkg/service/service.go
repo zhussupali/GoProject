@@ -14,6 +14,7 @@ type Authorization interface {
 type Post interface {
 	Create(userId int, input twittie.Post) (int, error)
 	GetAll(userId int) ([]twittie.Post, error)
+	GetById(userId, listId int) (twittie.Post, error)
 	Delete(userId, listId int) error
 }
 

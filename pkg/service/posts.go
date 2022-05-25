@@ -23,6 +23,10 @@ func (s *PostsService) GetAll(userId int) ([]twittie.Post, error) {
 	return s.repo.GetAll(userId)
 }
 
+func (s *PostsService) GetById(userId, listId int) (twittie.Post, error) {
+	return s.repo.GetById(userId, listId)
+}
+
 func (s *PostsService) Delete(userId, listId int) error {
 	return s.repo.Delete(userId, listId)
 }
