@@ -18,3 +18,7 @@ func NewPostsService(repo repository.Post) *PostsService {
 func (s *PostsService) Create(userId int, posts twittie.Post) (int, error) {
 	return s.repo.Create(userId, posts)
 }
+
+func (s *PostsService) Delete(userId, listId int) error {
+	return s.repo.Delete(userId, listId)
+}

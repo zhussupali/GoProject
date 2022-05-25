@@ -12,6 +12,7 @@ type Authorization interface {
 
 type Post interface {
 	Create(userId int, posts twittie.Post) (int, error)
+	Delete(userId, listId int) error
 }
 
 type Repository struct {
